@@ -1,0 +1,6 @@
+Django==2.2.10
+httplib2==0.11.3
+requests
+whitenoise
+gunicorn
+applicationinsights
