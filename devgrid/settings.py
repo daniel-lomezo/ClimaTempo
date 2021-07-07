@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'devgrid.wsgi.application'
 DATABASES = {
         'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR , 'erpfacc.sqlite3'),
+        'NAME': os.path.join(BASE_DIR , 'devgrid.sqlite3'),
     }
 }
 # Password validation
