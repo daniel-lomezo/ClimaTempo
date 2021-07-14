@@ -1,0 +1,324 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'icon/fav.png' %}">
+
+    <title>DevGrid API - Time</title>
+
+    <!-- Principal CSS do Bootstrap -->
+    <link  href="{% static 'grep/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Estilos customizados para esse template -->
+    <link href="{% static  'grep/jumbotron.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+<body>
+   <div class="card">
+    <div class="card-header">
+      Apresentações
+    </div>
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <p>
+          Site solely and exclusively to carry out a selective process in DevGrid --><br>
+          This is an application designed to consume and process data from APIs provided by openweathermap!<br>
+          The technologies used were:<br> 
+          Python;<br>
+          Django;<br>
+          VueJs;<br>
+          BootStrap<br>
+          Html;<br>
+          Css;<br>
+          SQLite3;<br>
+        </p>
+        <footer class="blockquote-footer"><strong>For</strong> <cite title="Source Title">Daniel Lomezo</cite> <strong>To</strong> <cite title="Source Title">DevGrid</cite></footer>
+      </blockquote>
+    </div>
+  </div> 
+<main role="main" style="margin-top: 35px;">
+
+ <div id="App">    
+
+    <div class="container" style="margin-bottom: 50px;">
+      <label for="city" class="form-label ">Select city</label>  
+      <select class="form-select" v-model="select_city" style="width: 20rem;" v-on:change="get_data_filter(select_city)">
+          <option class="form-select" v-for="(opt, line) in json_convert_list" :value="opt.fields.country_id">
+            <% opt.fields.city %>
+          </option>
+      </select>
+    </div>
+    <div class="container">
+      <div class="card" style="padding-top: 15px; padding-left: 7px; margin-bottom: 30px;">
+          <div class="container">
+            <div class="card" style="margin-bottom: 15px;">              
+              <div class="input-group mb-3" style="padding-top: 15px; padding-left: 7px;">
+                <input type="text" :value="base" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Base</span>
+                <input type="text" :value="clouds" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Clouds</span>
+                <input type="text" :value="lati" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Lati</span>
+                <input type="text" :value="long" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Long</span>
+              </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 15px;">
+              <div class="input-group mb-3" style="padding-top: 15px; padding-left: 7px;">
+                <input type="text" :value="feels_like" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Feels Like </span>
+                <input type="text" :value="grnd_level" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Grnd Level</span>
+                <input type="text" :value="humidity" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Humidity</span>
+                <input type="text" :value="temp" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Temp C°</span>
+                <input type="text" :value="temp_max" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Max Temp C°</span>
+                <input type="text" :value="temp_min " class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Min Temp C°</span>
+              </div>
+            </div>
+
+            <div class="card"  style="margin-bottom: 15px;">
+              <div class="input-group mb-3" style="padding-top: 15px; padding-left: 7px;">
+                <input type="text" :value="country" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Country</span>
+                <input type="text" :value="sunrise" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Sunrise</span>
+                <input type="text" :value="timezone" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Timezone</span>
+                <input type="text" :value="visibility" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Visibility</span>
+              </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 15px;">
+              <div class="input-group mb-3" style="padding-top: 15px; padding-left: 7px;">
+                <input type="text" :value="description" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Description</span>
+                <input type="text" :value="main" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Main</span>
+                <input type="text" :value="deg" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Deg</span>
+                <input type="text" :value="gust" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Gust</span>
+                <input type="text" :value="speed" class="form-control">
+                <span class="input-group-text" style="margin-right:10px;">Speed</span>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="container"width="1300">
+        <div class="card"width="1300" style="padding-top: 15px; padding-left: 7px; margin-bottom: 30px;">
+            <div class="mapouter">
+              <div class="gmap_canvas">
+                <iframe width="1250" height="571" id="gmap_canvas" v-bind:src="'https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q='+url_map+'&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"> 
+                </iframe><a href="https://www.whatismyip-address.com/divi-discount/">
+                </a>
+                <br>
+                <style>
+                    .mapouter{
+                        text-align:right;
+                        height:571px;
+                        }
+                </style>
+              </div>
+            </div>
+          </div>
+        </div>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+       
+   
+</main>
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js "> </script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+<script>
+
+     
+  var app = new Vue({
+      el: '#App',
+      delimiters: ['<%' , '%>'],
+      data: {
+        select_city: null,
+        see_map: null,
+        see_info_cicty: null,
+        json_convert_list: [],
+        dadta_get_city: [],
+        json_data_filter: [],
+        data_filter:[],
+        base: null,
+        clouds: null,
+        lati: null,
+        long: null,
+        feels_like: null,
+        grnd_level: null,
+        humidity: null,
+        temp: null,
+        temp_max: null,
+        temp_min: null,
+        country: null,
+        sunrise: null,
+        sunset: null,
+        timezone: null,
+        visibility: null,
+        description: null,
+        main: null,
+        deg: null,
+        gust: null,
+        speed: null,
+        url_map: null,
+
+
+
+      },
+      filters: {
+        moment: function (date) {
+          return moment(date).format('MMMM/DD/YYYY, hh:mm:ss');
+        }
+      },
+      methods: {
+        convert_temp_F_to_C: function(temp){
+          var temperature_C = (temp - 32) / 1.8
+          return temperature_C
+          
+          },
+
+
+        get_city_names: function(){
+          var self = this
+          var url = '/index/get_list_citys/'
+          // Make a request for a user with a given ID
+          var csrfCookie = Cookies.get('X-CSRFToken');
+          axios.get(url)
+            .then(function (response) {
+              headers: new Headers({"Content-Type": "application/json"})
+
+              // handle success
+              self.dadta_get_city = response.data;
+              self.json_convert_list = JSON.parse(self.dadta_get_city);            
+              console.log(json_convert_list)
+
+             
+            })
+            .catch(function (error) {
+              console.log(error);
+              $('#alerta_solicitacao').alert()
+              self.tipo_alert = 'Erro'
+              self.mensagem_alert = 'As informações sobre '+select_city+' não estão presentes na fonte'
+                         
+            })
+            .then(function () {
+              // always executed
+            });
+
+      },
+
+      get_data_filter: function(country_id){
+          var self = this
+          var api_key = '7148d8c193cc5bd3c40a5041d8bf7c7a'
+          var url = 'http://api.openweathermap.org/data/2.5/weather?appid='+api_key+'&units=metric&id='+country_id
+          // Make a request for a user with a given ID
+          var csrfCookie = Cookies.get('X-CSRFToken');
+          axios.get(url)
+            .then(function (response) {
+              headers: new Headers({"Content-Type": "application/json"})
+
+              // handle success
+              self.data_filter = response.data;
+              self.json_data_filter = self.data_filter;     
+
+              self.base = self.json_data_filter['base']
+              self.clouds = self.json_data_filter['clouds']['all']
+              self.lati = self.json_data_filter['coord']['lat']
+              self.long = self.json_data_filter['coord']['lon']
+              self.feels_like = self.json_data_filter['main']['feels_like']
+              self.grnd_level = self.json_data_filter['main']['grnd_level']
+              self.humidity = self.json_data_filter['main']['humidity']
+              self.temp = self.json_data_filter['main']['temp']
+              self.temp_max = self.json_data_filter['main']['temp_max']
+              self.temp_min = self.json_data_filter['main']['temp_min']
+              self.country = self.json_data_filter['sys']['country']
+              self.sunrise = self.json_data_filter['sys']['sunrise']
+              self.sunset = self.json_data_filter['sys']['sunset']
+              self.timezone = self.json_data_filter['timezone']
+              self.visibility = self.json_data_filter['visibility']
+              self.description = self.json_data_filter['weather']['0']['description']
+              self.main = self.json_data_filter['weather']['0']['main']
+              self.deg = self.json_data_filter['wind']['deg']
+              self.gust = self.json_data_filter['wind']['gust']
+              self.speed = self.json_data_filter['wind']['speed']  
+              var city_for_map = self.json_data_filter['name']
+              self.url_map = self.json_data_filter['name'].replace(/\s+/g, '%')
+              //'https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q='+select_city+'&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'
+              console.log(response.data)
+
+             
+            })
+            .catch(function (error) {
+              console.log(error);
+              $('#alerta_solicitacao').alert()
+              self.tipo_alert = 'Erro'
+              self.mensagem_alert = 'As informações sobre '+select_city+' não estão presentes na fonte'
+                         
+            })
+            .then(function () {
+              // always executed
+            });
+
+
+
+
+      },
+
+
+        },
+
+
+       beforeMount(){
+            this.get_city_names()
+           },
+
+    });
+
+
+
+</script>
+
+</html>
