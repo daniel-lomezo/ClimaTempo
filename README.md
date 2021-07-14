@@ -1,12 +1,17 @@
 # DevGrid
 
-To get started, download the repository
-  --> git clone https://github.com/daniel-lomezo/DevGrid/
-  
+
+To get started, download the repository:
+    
+    git clone https://github.com/daniel-lomezo/DevGrid.git;
+
 Navigate to the DevGrid folder:
-  --> cd DevGrid 
+
+    cd DevGrid 
 
 After entering the folder, run the following commands in their respective order:
-  --> sudo docker build --tag devgrid:latest 
-  --> sudo docker run --name devgrid -d -p 8000:8000 devgrid:latest
+
+    sudo docker build --tag devgrid:latest 
+
+    sudo docker run --name devgrid -d -p 8000:8000 devgrid:latest
   
