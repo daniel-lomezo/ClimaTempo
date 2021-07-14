@@ -253,7 +253,7 @@
       get_data_filter: function(country_id){
           var self = this
           var api_key = '7148d8c193cc5bd3c40a5041d8bf7c7a'
-          var url = 'http://api.openweathermap.org/data/2.5/weather?appid='+api_key+'&units=metric&id='+country_id
+          var url = 'https://api.openweathermap.org/data/2.5/weather?appid='+api_key+'&units=metric&id='+country_id
           // Make a request for a user with a given ID
           var csrfCookie = Cookies.get('X-CSRFToken');
           axios.get(url)
