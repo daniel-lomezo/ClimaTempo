@@ -13,7 +13,7 @@ The technologies used were:
 
     Django;
   
-    VueJS;
+    VueJS;  
 
     BootStrap;
 
@@ -39,3 +39,8 @@ After entering the folder, run the following commands in their respective order:
 
     sudo docker run --name devgrid -d -p 8000:8000 devgrid:latest
   
+And to enter locally go to:
+    
+    localhost:8000
+    
+        
