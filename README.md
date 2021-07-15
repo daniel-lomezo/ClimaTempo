@@ -5,7 +5,7 @@ To solve the problem of slowness, I studied a little more the services provided 
 
 
 Currently, the project consists of a small web application with a selector button with the names of the cities and which automatically then selects the city's weather data in a small form.
-I used to develop this project:
+The technologies used were:
     
     Python;
 
