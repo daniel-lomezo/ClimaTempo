@@ -35,7 +35,7 @@ Navigate to the DevGrid folder:
 
 After entering the folder, run the following commands in their respective order:
 
-    sudo docker build --tag devgrid:latest 
+    sudo docker build --tag devgrid:latest .
 
     sudo docker run --name devgrid -d -p 8000:8000 devgrid:latest
   
