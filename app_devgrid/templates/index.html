@@ -20,14 +20,21 @@
 
 <body>
    <div class="card">
-    <div class="card-header">
+    <div class="card-header" style="background-color: #F08080;">
       Apresentações
     </div>
-    <div class="card-body">
+    <div class="card-body" style="background-color: #D3D3D3;">
       <blockquote class="blockquote mb-0">
         <p>
-          Site solely and exclusively to carry out a selective process in DevGrid --><br>
-          This is an application designed to consume and process data from APIs provided by openweathermap!<br>
+          Site solely and exclusively to carry out a selective process in DevGrid --><br><br>
+
+          This is an application designed to consume and process data from APIs provided by openweathermap!<br><br>
+
+          For this application, what was proposed, to me was to perform requests on an API and query weather information from a list of approximately 170 different cities.<br><br>
+          To solve the problem of slowness, I studied a little more the services provided by "Open Wea thermap" I thought it would be better to save the city IDs and their respective names in a SQLite3 database using the data from the file "city.list.json", 
+            downloaded from the same platform, as it is simpler and easy to get started for a small project with this type of architecture. <br><br>
+          Currently, the project consists of a small web application with a selector button with the names of the cities and which automatically then selects the city's weather data in a small form.
+          <br><br>
           The technologies used were:<br> 
           Python;<br>
           Django;<br>
@@ -37,7 +44,14 @@
           Css;<br>
           SQLite3;<br>
         </p>
-        <footer class="blockquote-footer"><strong>For</strong> <cite title="Source Title">Daniel Lomezo</cite> <strong>To</strong> <cite title="Source Title">DevGrid</cite></footer>
+        <br>
+        <br>
+        <footer class="blockquote-footer">
+          <strong>By</strong> 
+          <cite title="Source Title">Daniel Lomezo</cite> 
+          <strong>To</strong> 
+          <cite title="Source Title">DevGrid</cite>
+        </footer>
       </blockquote>
     </div>
   </div> 
@@ -46,15 +60,30 @@
  <div id="App">    
 
     <div class="container" style="margin-bottom: 50px;">
-      <label for="city" class="form-label ">Select city</label>  
+      <label for="city" class="form-label ">To start, select the city</label>  
       <select class="form-select" v-model="select_city" style="width: 20rem;" v-on:change="get_data_filter(select_city)">
           <option class="form-select" v-for="(opt, line) in json_convert_list" :value="opt.fields.country_id">
             <% opt.fields.city %>
           </option>
       </select>
+    </div> 
+
+    <div class="alert alert-warning" name="alerta_solicitacao" id="alerta_solicitacao" v-if="tipo_alert=='Alerta'" role="alert">
+      <strong>Alerta </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <% mensagem_alert %>
+      <button type="button" class="btn-close aling-start" data-dismiss="alert" aria-label="Close"></button>
     </div>
-    <div class="container">
+    <div class="alert alert-danger" name="alerta_solicitacao" id="alerta_solicitacao"  v-if="tipo_alert=='Erro'" role="alert">
+      <strong>Erro</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <% mensagem_alert %>
+      <button type="button" class="btn-close aling-start" data-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="alert alert-success" name="alerta_solicitacao" id="alerta_solicitacao"  v-if="tipo_alert=='OK'" role="alert">
+      <strong>=) </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<% mensagem_alert %>
+      <button type="button" class="btn-close aling-start" data-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="container" v-if="see_map">
       <div class="card" style="padding-top: 15px; padding-left: 7px; margin-bottom: 30px;">
+        <h6 style="margin-left: 15px;">Weather Information:</h6>
           <div class="container">
             <div class="card" style="margin-bottom: 15px;">              
               <div class="input-group mb-3" style="padding-top: 15px; padding-left: 7px;">
@@ -117,6 +146,7 @@
       </div>
       <div class="container"width="1300">
         <div class="card"width="1300" style="padding-top: 15px; padding-left: 7px; margin-bottom: 30px;">
+          <h6 style="margin-left: 15px; margin-bottom: 20px;">Estimated location:</h6>
             <div class="mapouter">
               <div class="gmap_canvas">
                 <iframe width="1250" height="571" id="gmap_canvas" v-bind:src="'https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q='+url_map+'&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"> 
@@ -133,7 +163,7 @@
             </div>
           </div>
         </div>
-           </div>
+      </div>
         </div>
       </div>
     </div>
@@ -156,9 +186,14 @@
 
 
 
+<footer class="card" aling="start" name="footer" id="footer">
+    <p  align="center"> <strong>©DevGrid - All rights reserved to DevGrid</strong></p>
+</footer>
 
-
-
+<style>
+  #footer{background-color:#F08080;color:white;margin-top: 22%}
+</style>
+ 
 
 </body>
 
@@ -170,12 +205,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
 <script>
-
-     
   var app = new Vue({
       el: '#App',
       delimiters: ['<%' , '%>'],
       data: {
+        tipo_alert: null,
         select_city: null,
         see_map: null,
         see_info_cicty: null,
@@ -204,9 +238,6 @@
         gust: null,
         speed: null,
         url_map: null,
-
-
-
       },
       filters: {
         moment: function (date) {
@@ -217,10 +248,7 @@
         convert_temp_F_to_C: function(temp){
           var temperature_C = (temp - 32) / 1.8
           return temperature_C
-          
           },
-
-
         get_city_names: function(){
           var self = this
           var url = '/index/get_list_citys/'
@@ -229,25 +257,18 @@
           axios.get(url)
             .then(function (response) {
               headers: new Headers({"Content-Type": "application/json"})
-
               // handle success
               self.dadta_get_city = response.data;
               self.json_convert_list = JSON.parse(self.dadta_get_city);            
               console.log(json_convert_list)
-
-             
             })
             .catch(function (error) {
               console.log(error);
-              $('#alerta_solicitacao').alert()
-              self.tipo_alert = 'Erro'
-              self.mensagem_alert = 'As informações sobre '+select_city+' não estão presentes na fonte'
-                         
+          
             })
             .then(function () {
               // always executed
             });
-
       },
 
       get_data_filter: function(country_id){
@@ -256,14 +277,13 @@
           var url = 'https://api.openweathermap.org/data/2.5/weather?appid='+api_key+'&units=metric&id='+country_id
           // Make a request for a user with a given ID
           var csrfCookie = Cookies.get('X-CSRFToken');
+          self.see_map = true
           axios.get(url)
             .then(function (response) {
               headers: new Headers({"Content-Type": "application/json"})
-
               // handle success
               self.data_filter = response.data;
               self.json_data_filter = self.data_filter;     
-
               self.base = self.json_data_filter['base']
               self.clouds = self.json_data_filter['clouds']['all']
               self.lati = self.json_data_filter['coord']['lat']
@@ -288,37 +308,24 @@
               self.url_map = self.json_data_filter['name'].replace(/\s+/g, '%')
               //'https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q='+select_city+'&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'
               console.log(response.data)
-
-             
             })
             .catch(function (error) {
               console.log(error);
+              self.see_map = false;
               $('#alerta_solicitacao').alert()
               self.tipo_alert = 'Erro'
-              self.mensagem_alert = 'As informações sobre '+select_city+' não estão presentes na fonte'
-                         
+              self.mensagem_alert = 'As informações sobre '+self.select_city+' não estão presentes na fonte'
             })
             .then(function () {
               // always executed
             });
-
-
-
-
       },
 
-
         },
-
-
        beforeMount(){
             this.get_city_names()
            },
-
     });
-
-
-
 </script>
 
 </html>
